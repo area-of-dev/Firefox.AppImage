@@ -12,10 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 set -e
 
-
 PATH=${PATH}:${APPDIR}/firefox
 export PATH=${PATH}
-
 
 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${APPDIR}/firefox
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}
@@ -25,4 +23,9 @@ export XDG_DATA_DIRS=${XDG_DATA_DIRS}
 
 cd ${OWD}
 
-exec ${APPDIR}/firefox/firefox -P default "$@"
+if [ -z "$@" ]
+then
+    exec ${APPDIR}/firefox/firefox --ProfileManager
+else
+    exec ${APPDIR}/firefox/firefox $@
+fi
