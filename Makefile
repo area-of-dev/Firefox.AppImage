@@ -15,10 +15,14 @@ all: clean
 	mkdir --parents $(PWD)/build
 	wget --output-document="$(PWD)/build/build.tar.bz2" "https://download.mozilla.org/?product=firefox-latest&os=linux64"
 
+	wget --no-check-certificate --output-document=$(PWD)/build/build.rpm http://mirror.centos.org/centos/8/AppStream/x86_64/os/Packages/gtk3-3.22.30-5.el8.x86_64.rpm
+	cd $(PWD)/build && rpm2cpio $(PWD)/build/build.rpm | cpio -idmv && cd ..
+
 	tar -jxvf $(PWD)/build/build.tar.bz2 -C $(PWD)/build
 
 	mkdir --parents $(PWD)/build/AppDir
 	cp --force --recursive $(PWD)/build/firefox $(PWD)/build/AppDir/
+	cp --force --recursive $(PWD)/build/usr/* $(PWD)/build/AppDir/
 	cp --force --recursive $(PWD)/AppDir/* $(PWD)/build/AppDir
 
 	chmod +x $(PWD)/build/AppDir/AppRun
