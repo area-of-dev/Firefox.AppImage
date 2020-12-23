@@ -27,8 +27,8 @@ export XDG_DATA_DIRS=${XDG_DATA_DIRS}
 cd ${OWD}
 
 if [ -z "$@" ]
-then
-    exec ${APPDIR}/firefox/firefox --ProfileManager
-else
-    exec ${APPDIR}/firefox/firefox $@
-fi
+    then
+        exec ${APPDIR}/firefox/firefox --ProfileManager
+    else
+        exec ${APPDIR}/firefox/firefox $@
+    fi

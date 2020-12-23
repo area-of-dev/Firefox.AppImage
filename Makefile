@@ -12,9 +12,8 @@
 PWD:=$(shell pwd)
 
 all:  clean
-	mkdir --parents $(PWD)/build
 	mkdir --parents $(PWD)/build/Boilerplate.AppDir
-	apprepo --destination=$(PWD)/build appdir boilerplate libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0
+	apprepo --destination=$(PWD)/build appdir boilerplate libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libreadline8
 
 	wget --output-document="$(PWD)/build/build.tar.bz2" "https://download.mozilla.org/?product=firefox-latest&os=linux64"
 	tar -jxvf $(PWD)/build/build.tar.bz2 -C $(PWD)/build
