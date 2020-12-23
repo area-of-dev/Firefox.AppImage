@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Firefox Web Browser
 Comment=Access the Internet
-Exec=AppRun %U
+Exec=AppRun -P default %U
 Terminal=false
 X-MultipleArgs=false
 Type=Application
