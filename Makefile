@@ -11,11 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 PWD := $(shell pwd)
 
-DOCKER_CONTAINER:=$(shell basename $(PWD) | sed "s/\.//" | tr A-Z a-z)
 DOCKER_COMPOSE:=docker-compose -f $(PWD)/docker-compose.yaml
 
 .EXPORT_ALL_VARIABLES:
-CID=$(shell basename $(PWD) | sed "s/\.//" | tr A-Z a-z)
+CID=$(shell basename $(PWD) | tr -cd '[:alnum:]' | tr A-Z a-z)
 UID=$(shell id -u)
 GID=$(shell id -g)
 
