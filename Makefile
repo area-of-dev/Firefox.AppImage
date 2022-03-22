@@ -9,30 +9,27 @@
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-PWD:=$(shell pwd)
+PWD := $(shell pwd)
 
-all:  clean
-	mkdir --parents $(PWD)/build/Boilerplate.AppDir
-	apprepo --destination=$(PWD)/build appdir boilerplate libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libreadline8
+DOCKER_CONTAINER:=$(shell basename $(PWD) | sed "s/\.//" | tr A-Z a-z)
+DOCKER_COMPOSE:=docker-compose -f $(PWD)/docker-compose.yaml
 
-	wget --output-document="$(PWD)/build/build.tar.bz2" "https://download.mozilla.org/?product=firefox-latest&os=linux64"
-	tar -jxvf $(PWD)/build/build.tar.bz2 -C $(PWD)/build
+.EXPORT_ALL_VARIABLES:
+CID=$(shell basename $(PWD) | sed "s/\.//" | tr A-Z a-z)
+UID=$(shell id -u)
+GID=$(shell id -g)
 
-	echo "LD_LIBRARY_PATH=\$${LD_LIBRARY_PATH}:\$${APPDIR}/firefox" >> $(PWD)/build/Boilerplate.AppDir/AppRun
-	echo "export LD_LIBRARY_PATH=\$${LD_LIBRARY_PATH}" >> $(PWD)/build/Boilerplate.AppDir/AppRun
-	echo "exec \$${APPDIR}/firefox/firefox \"\$${@}\"" >> $(PWD)/build/Boilerplate.AppDir/AppRun
+.PHONY: all
 
-	cp --force --recursive $(PWD)/build/firefox $(PWD)/build/Boilerplate.AppDir
 
-	rm --force $(PWD)/build/Boilerplate.AppDir/*.desktop
-
-	cp --force $(PWD)/AppDir/*.desktop $(PWD)/build/Boilerplate.AppDir/
-	cp --force $(PWD)/AppDir/*.png $(PWD)/build/Boilerplate.AppDir/ || true
-	cp --force $(PWD)/AppDir/*.svg $(PWD)/build/Boilerplate.AppDir/ || true
-
-	export ARCH=x86_64 && $(PWD)/bin/appimagetool.AppImage $(PWD)/build/Boilerplate.AppDir $(PWD)/Firefox.AppImage
-	chmod +x $(PWD)/Firefox.AppImage
-
+all: clean
+	$(DOCKER_COMPOSE) stop
+	$(DOCKER_COMPOSE) up --build --no-start
+	$(DOCKER_COMPOSE) up -d  "appimage"
+	$(DOCKER_COMPOSE) run    "appimage" make all
+	$(DOCKER_COMPOSE) run    "appimage" chown -R $(UID):$(GID) ./
+	$(DOCKER_COMPOSE) stop
 
 clean:
-	rm -rf $(PWD)/build
+	$(DOCKER_COMPOSE) rm --stop --force
+
