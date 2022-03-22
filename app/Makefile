@@ -37,6 +37,7 @@ all: clean init
 
 
 init:
+	mkdir --parents $(PWD)/bin
 
 	wget https://apprepo.de/appimage/download/apprepo \
 		--output-document=$(PWD)/bin/Apprepo.AppImage
