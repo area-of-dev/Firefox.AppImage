@@ -3,11 +3,14 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: ~
 
 env:
   DOCKER_BUILDKIT: 1
   AUTHENTICATION: "${{ secrets.PROD_AUTHENTICATION }}"
   TOKEN: "${{ secrets.PROD_TOKEN }}"
+  PACKAGE: ${{ secrets.PROD_PACKAGE }}
+
 
 jobs:
   deploy:
@@ -26,6 +29,8 @@ jobs:
 
           echo "[user]"                    >  ./app/.config/apprepo/default.conf
           echo "token = ${AUTHENTICATION}" >> ./app/.config/apprepo/default.conf
+          
+          echo "${{ github.event.repository.name }}"
 
       - name: build
         run: |
@@ -46,5 +51,5 @@ jobs:
       - name: build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${PACKAGE}
+          name: ${{ github.event.repository.name }}
           path: "./dist/*.AppImage"
