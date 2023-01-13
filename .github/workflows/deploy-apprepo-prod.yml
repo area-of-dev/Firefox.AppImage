@@ -9,8 +9,6 @@ env:
   DOCKER_BUILDKIT: 1
   AUTHENTICATION: "${{ secrets.PROD_AUTHENTICATION }}"
   TOKEN: "${{ secrets.PROD_TOKEN }}"
-  PACKAGE: ${{ secrets.PROD_PACKAGE }}
-
 
 jobs:
   deploy:
