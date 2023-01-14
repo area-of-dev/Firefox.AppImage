@@ -34,9 +34,9 @@ all: clean init
 	rm --force $(PWD)/build/Boilerplate.AppDir/*.svg 		  	      || true
 	rm --force $(PWD)/build/Boilerplate.AppDir/lib64/libstdc++.so.6*  || true
 
-	cp --force $(PWD)/AppDir/*.desktop $(PWD)/build/Boilerplate.AppDir/
-	cp --force $(PWD)/AppDir/*.png $(PWD)/build/Boilerplate.AppDir/      || true
-	cp --force $(PWD)/AppDir/*.svg $(PWD)/build/Boilerplate.AppDir/      || true
+	cp --force $(PWD)/AppDir/*.desktop  $(PWD)/build/Boilerplate.AppDir/      || true
+	cp --force $(PWD)/AppDir/*.png      $(PWD)/build/Boilerplate.AppDir/      || true
+	cp --force $(PWD)/AppDir/*.svg      $(PWD)/build/Boilerplate.AppDir/      || true
 
 	export ARCH=x86_64 && $(PWD)/bin/appimagetool.AppImage $(PWD)/build/Boilerplate.AppDir $(PWD)/Firefox.AppImage
 	chmod +x $(PWD)/Firefox.AppImage
